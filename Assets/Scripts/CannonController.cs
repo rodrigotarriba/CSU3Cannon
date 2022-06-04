@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class CannonController : MonoBehaviour
 {
+    [Header("Cannon Rotation")]
+    
     [SerializeField]
     private float maxYRotation = 130f;
     [SerializeField]
@@ -16,10 +18,29 @@ public class CannonController : MonoBehaviour
     [SerializeField]
     private float rotationSpeed = 10f;
 
+    [Header("Cannon Rotation Transforms")]
     [SerializeField]
-    private Transform canonBarrelTransform;
+    private Transform cannonBarrelTransform;
     [SerializeField]
     private Transform cannonBaseTransform;
+
+    [Header("Projectile Settings")]
+    [SerializeField]
+    private CannonBall projectilePrefab;
+    [SerializeField]
+    private Transform projectileFirePoint;
+    [SerializeField]
+    private float projectileShootingForce;
+
+
+
+
+
+    private void Awake()
+    {
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+    }
 
 
     // Start is called before the first frame update
@@ -31,7 +52,8 @@ public class CannonController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        return;
+        AimCannon();
+        FireCannon();
 
     }
 
@@ -44,9 +66,39 @@ public class CannonController : MonoBehaviour
 
         //rotate along the y axis
         float vertical = Input.GetAxis("Mouse Y");
+        float newBarrelRotation = cannonBarrelTransform.localRotation.eulerAngles.x - rotationSpeed * vertical; //we put minus because when the mouse goes down, the barrel goes up, when the mouse goes up the barrel goes down.
+
+        // limit the rotation in both axiss
+        newBaseRotation = Mathf.Clamp(newBaseRotation, minYRotation, maxYRotation);
+        newBarrelRotation = Mathf.Clamp(newBarrelRotation, minXRotation, maxXRotation);
+
+        // apply the rotation
+        cannonBaseTransform.localRotation = Quaternion.Euler(0, newBaseRotation, 0);
+        cannonBarrelTransform.localRotation = Quaternion.Euler(newBarrelRotation, 0, 0);
 
         //rotate along the 
         //stayed at the 1:11 minutes
+
+
+    }
+
+    private void FireCannon()
+    {
+        // do we have that left mouse button that can be pushed
+
+        // guard clause - save resources
+        if(!Input.GetButtonDown("Fire1"))
+        {
+            return;
+        }
+
+
+        Instantiate(projectilePrefab, projectileFirePoint.position, Quaternion.identity);
+
+
+
+
+
     }
 
 

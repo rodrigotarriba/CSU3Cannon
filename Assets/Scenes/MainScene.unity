@@ -547,31 +547,6 @@ Transform:
   m_Father: {fileID: 1721720567}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &566564787 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7491132528243105560, guid: bd557301846767b459959894082f15d7,
-    type: 3}
-  m_PrefabInstance: {fileID: 7489498592515010993}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &566564791
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 566564787}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9deba0bda4642e8448f1ca116699f3bb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maxYRotation: 130
-  minYRotation: 50
-  maxXRotation: 75
-  minXRotation: 15
-  rotationSpeed: 10
-  canonBarrelTransform: {fileID: 0}
-  cannonBaseTransform: {fileID: 0}
 --- !u!1 &587294411 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5723106013861449387, guid: 4fa5b8d5a91a7104eb1dcae1bb798c58,
@@ -1535,10 +1510,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 923615576, guid: bd557301846767b459959894082f15d7, type: 3}
-      propertyPath: m_RenderPostProcessing
-      value: 1
-      objectReference: {fileID: 0}
+    - target: {fileID: 566564791, guid: bd557301846767b459959894082f15d7, type: 3}
+      propertyPath: projectilePrefab
+      value: 
+      objectReference: {fileID: 4737597877156455712, guid: 3547474a124479641896f7b8eb250e0d,
+        type: 3}
     - target: {fileID: 7491132528243105560, guid: bd557301846767b459959894082f15d7,
         type: 3}
       propertyPath: m_Name
