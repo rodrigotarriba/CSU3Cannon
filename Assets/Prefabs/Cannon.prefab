@@ -382,7 +382,7 @@ MonoBehaviour:
   rotationSpeed: 5
   cannonBarrelTransform: {fileID: 7493693398930409538}
   cannonBaseTransform: {fileID: 7493978000168114224}
-  projectilePrefab: {fileID: 536813900378292188, guid: 3547474a124479641896f7b8eb250e0d,
+  projectilePrefab: {fileID: 4737597877156455712, guid: 3547474a124479641896f7b8eb250e0d,
     type: 3}
   projectileFirePoint: {fileID: 2236371049338748935}
   projectileShootingForce: 40
