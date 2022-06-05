@@ -6,7 +6,9 @@ public class Ch2InstantiateObjs : MonoBehaviour
 {
 
     [SerializeField] GameObject m_cube;
-    
+    [SerializeField] GameObject m_mainCamera;
+    [SerializeField] Transform m_emptyObjTransform;
+     
     // Start is called before the first frame update
     void Start()
     {
@@ -16,40 +18,34 @@ public class Ch2InstantiateObjs : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.I))
-        {
-            //InstantiateCube(DrandomPosition);
-        }
+        InstantiateCube();
     }
 
 
-    enum InstanceTypes
+
+    void InstantiateCube()
     {
-        AnoParent,
-        BchildOfCamera,
-        CchildOfTransform,
-        DrandomPosition,
 
-    }
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            Instantiate(m_cube, new Vector3(0, 100, 0), Quaternion.Euler(0, 45, 0));
+        }
 
-//    void InstantiateCube(InstanceTypes type)
-//    {
-//        switch (type)
-//        {
-//            case InstanceTypes.AnoParent:
-//                Instantiate(m_cube, new Vector3(0, 100, 0), //Quaternion.Euler(0, 45, 0));
-//                break;
-//            case InstanceTypes.BchildOfCamera:
-//                Instantiate(m_cube, )
-//                break;
-//            case InstanceTypes.CchildOfTransform:
-//                break;
-//            case InstanceTypes.DrandomPosition:
-//                break;
-//            default:
-//                break;
-//        }
+        if (Input.GetKeyDown(KeyCode.B))
+        {
+            Instantiate(m_cube, new Vector3(0, -10, 0), Quaternion.Euler(new Vector3(0, 45, 0) + m_mainCamera.transform.rotation.eulerAngles), m_mainCamera.transform);
+        }
 
+        if (Input.GetKeyDown(KeyCode.C))
+        {
+            Instantiate(m_cube, m_emptyObjTransform);
+        }
+
+        if (Input.GetKey(KeyCode.D))
+        {
+            Vector3 randompos = new Vector3(Random.Range(-100, 100), Random.Range(-100, 100), Random.Range(-100, 100));
+            Instantiate(m_cube, randompos, Quaternion.identity);
+        }
 
 
 

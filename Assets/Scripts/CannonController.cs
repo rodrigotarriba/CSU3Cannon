@@ -93,7 +93,8 @@ public class CannonController : MonoBehaviour
         }
 
 
-        Instantiate(projectilePrefab, projectileFirePoint.position, Quaternion.identity);
+        CannonBall m_cannonBall = Instantiate(projectilePrefab, projectileFirePoint.position, Quaternion.identity);
+        m_cannonBall.SetUp(projectileFirePoint.forward * projectileShootingForce); 
 
 
 
