@@ -6,9 +6,9 @@ using UnityEngine;
 
 public class CannonBall : MonoBehaviour
 {
-    private Rigidbody m_cannonBallRigidBody;
+    protected Rigidbody m_cannonBallRigidBody; //a protected variable is accesible to the children of the class they are at
 
-    [SerializeField] private Animator m_cannonBallAnimator;
+    [SerializeField] protected Animator m_cannonBallAnimator;
     [SerializeField] private float explosionRadius = 9.0f;
     [SerializeField] private float explosionForce = 12.0f;
     [SerializeField] private float explosionUpwardsModifier = 1.0f; //what does this do?
@@ -27,14 +27,8 @@ public class CannonBall : MonoBehaviour
 
 
 
-
-
-
-
-
-
     // This method is called externally by the controller
-    public void SetUp(Vector3 m_fireForce)
+    public virtual void SetUp(Vector3 m_fireForce)
     {
         // Adding a impulse force to the cannonball
         m_cannonBallRigidBody.AddForce(m_fireForce, ForceMode.Impulse);
@@ -44,8 +38,10 @@ public class CannonBall : MonoBehaviour
          
     }
 
-    private void OnCollisionEnter(Collision collision)
+    protected virtual void OnCollisionEnter(Collision collision)
     {
+        Debug.Log($"I am {gameObject.name} and I just hit {collision.collider.gameObject.name}");
+
         // rotate around the collision contact point
         transform.rotation = Quaternion.FromToRotation(transform.up, collision.GetContact(0).normal) * transform.rotation;
 
@@ -73,6 +69,7 @@ public class CannonBall : MonoBehaviour
 
         foreach (Collider collider in touchingColliders)
         {
+
             Rigidbody collidedRigidbody = collider.GetComponent<Rigidbody>();
             if (collidedRigidbody != null)
             {
@@ -104,11 +101,10 @@ public class CannonBall : MonoBehaviour
     public void OnFinishedExplosionAnimation()
     {
         // triggered by the animation, destroying instance when the animations finishes
+        Debug.Log($"animaion ended and the simple game object will be destroyed ");
         Destroy(gameObject);
     }
 
-    public void OnAnimationMiddlePoint()
-    {
-        Debug.Log($"it reached the center");
-    }
+
+
 }

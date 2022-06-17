@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class CannonController : MonoBehaviour
 {
@@ -28,13 +29,17 @@ public class CannonController : MonoBehaviour
     [SerializeField]
     private CannonBall projectilePrefab;
     [SerializeField]
-    private Transform projectileFirePoint;
+    private Transform projectileFirePoint; // this is where the projectile comes off from, if hit Vectr3.forward, it is where you are aiming
     [SerializeField]
     private float projectileShootingForce;
 
+    [Header("Other Settings")]
+    [SerializeField]
+    private Material m_redBarrelMaterial;
+    [SerializeField]
+    private Material m_defaultBarrelMaterial;
 
-
-
+    private RaycastHit[] m_aimingHits;
 
     private void Awake()
     {
@@ -55,7 +60,49 @@ public class CannonController : MonoBehaviour
         AimCannon();
         FireCannon();
 
+
     }
+
+
+    private void LateUpdate()
+    {
+        // this one turns any object far away red at aim
+        AimingTurningRed();
+    }
+
+    // this one turns any object far away red at aim
+    private void AimingTurningRed()
+    {
+        // activate a new array with a permissible number
+        RaycastHit[] m_aimingHits = new RaycastHit[5];
+
+
+        // use raycast non alloc to determine which element is being hit
+        var numberOfHits = Physics.RaycastNonAlloc(projectileFirePoint.position, projectileFirePoint.forward, m_aimingHits, Mathf.Infinity, ~0);
+
+        // guard clause - make sureraycast its hitting something
+        if (numberOfHits < 1)
+        {
+            return;
+        }
+
+        // go through all raycasts and detect which ones are targets
+        for (var i = 0; i < numberOfHits; i++)
+        {
+           // if layer is targets, turn red
+            if (m_aimingHits[i].collider.gameObject.layer == LayerMask.NameToLayer("Targets"))
+            {
+                m_aimingHits[i].collider.gameObject.GetComponent<MeshRenderer>().material = m_redBarrelMaterial;
+            }
+
+        }
+
+    }
+
+
+
+
+
 
     private void AimCannon()
     {
@@ -93,6 +140,8 @@ public class CannonController : MonoBehaviour
         }
 
 
+        Debug.Log($"shooitng a {projectilePrefab.name}");
+        Debug.Log($"I am a {gameObject.name}");
         CannonBall m_cannonBall = Instantiate(projectilePrefab, projectileFirePoint.position, Quaternion.identity);
         m_cannonBall.SetUp(projectileFirePoint.forward * projectileShootingForce); 
 

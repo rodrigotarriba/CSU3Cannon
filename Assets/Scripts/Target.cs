@@ -6,7 +6,10 @@ public class Target : MonoBehaviour
 {
     private int m_cannonBallTriggerLayerIndex;
     private int m_waterTriggerLayerIndex;
-
+    [SerializeField]
+    private Material m_regularMaterial;
+    [SerializeField]
+    private Material m_redMaterial;
 
     private void Awake()
     {
@@ -16,14 +19,19 @@ public class Target : MonoBehaviour
     }
 
 
+
+
+    private void Update()
+    {
+        GetComponent<MeshRenderer>().material = m_regularMaterial;
+    }
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log($"entered");
+
         if (other.gameObject.layer == m_waterTriggerLayerIndex)
         {
             Destroy(gameObject);
         }
-        Debug.Log($"it was destroyed");
     }
 
 
