@@ -67,6 +67,21 @@ PrefabInstance:
       propertyPath: m_Name
       value: SimpleCannonBall
       objectReference: {fileID: 0}
+    - target: {fileID: 8833421374727053288, guid: 3547474a124479641896f7b8eb250e0d,
+        type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8833421374727053292, guid: 3547474a124479641896f7b8eb250e0d,
+        type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8833421374727053294, guid: 3547474a124479641896f7b8eb250e0d,
+        type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3547474a124479641896f7b8eb250e0d, type: 3}
 --- !u!1 &1357748629318941405 stripped
