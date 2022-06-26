@@ -17,15 +17,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: e5da93bf3ff477c4f8f88f51e419c805, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 56.806858
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: e5da93bf3ff477c4f8f88f51e419c805, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 3.1127968
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: e5da93bf3ff477c4f8f88f51e419c805, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: 46.206467
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: e5da93bf3ff477c4f8f88f51e419c805, type: 3}
       propertyPath: m_LocalRotation.w
@@ -63,20 +63,6 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 2455932586482699757}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &912016475025647134
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2455932586482600781}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 01897e31fc264a546a73fa7b4d647f88, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_regularMaterial: {fileID: 0}
-  m_redMaterial: {fileID: 0}
 --- !u!54 &2599299297775273900
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -93,3 +79,17 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &912016475025647134
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2455932586482600781}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 01897e31fc264a546a73fa7b4d647f88, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_regularMaterial: {fileID: 2100000, guid: 790aef9e41abc39439890f1d40bf092d, type: 2}
+  m_redMaterial: {fileID: 2100000, guid: 4fd39a4d8fae78a4db79e331c3935642, type: 2}

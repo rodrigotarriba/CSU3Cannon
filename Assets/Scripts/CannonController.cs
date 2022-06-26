@@ -6,7 +6,6 @@ using System.Linq;
 public class CannonController : MonoBehaviour
 {
     [Header("Cannon Rotation")]
-    
     [SerializeField]
     private float maxYRotation = 130f;
     [SerializeField]
@@ -27,24 +26,41 @@ public class CannonController : MonoBehaviour
 
     [Header("Projectile Settings")]
     [SerializeField]
-    private CannonBall projectilePrefab;
-    [SerializeField]
     private Transform projectileFirePoint; // this is where the projectile comes off from, if hit Vectr3.forward, it is where you are aiming
     [SerializeField]
     private float projectileShootingForce;
+    [SerializeField]
+    private CannonBallType m_cannonBallTypeShot;
+    
 
-    [Header("Other Settings")]
+
+
+    [Header("Aiming Settings")]
     [SerializeField]
     private Material m_redBarrelMaterial;
     [SerializeField]
     private Material m_defaultBarrelMaterial;
 
+
+    [Header("Object Pooling")]
+    [SerializeField]
+    private CannonBallsPool pool; //this is the very first instance of the pooling, from here is where it gets passed around to others.
+
+    //Private Variables
     private RaycastHit[] m_aimingHits;
+    private bool m_fireDisabled = false;
+
+
+
+
 
     private void Awake()
     {
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+        pool.SetUp(20);
+
+
     }
 
 
@@ -58,7 +74,7 @@ public class CannonController : MonoBehaviour
     void Update()
     {
         AimCannon();
-        FireCannon();
+        TryFireCannon();
 
 
     }
@@ -129,26 +145,30 @@ public class CannonController : MonoBehaviour
 
     }
 
-    private void FireCannon()
+    private void TryFireCannon()
     {
         // do we have that left mouse button that can be pushed
 
-        // guard clause - save resources
-        if(!Input.GetButtonDown("Fire1"))
+        // guard clause - save resources - if our fire is disabled or we dont have a button just break the function
+        if(m_fireDisabled || !Input.GetButtonDown("Fire1"))
         {
             return;
         }
 
-
-        Debug.Log($"shooitng a {projectilePrefab.name}");
-        Debug.Log($"I am a {gameObject.name}");
-        CannonBall m_cannonBall = Instantiate(projectilePrefab, projectileFirePoint.position, Quaternion.identity);
-        m_cannonBall.SetUp(projectileFirePoint.forward * projectileShootingForce); 
-
-
+        CannonBall m_cannonBall = pool.GetCannonBall(m_cannonBallTypeShot);
+        m_cannonBall.transform.position = projectileFirePoint.position;
+        
+        //you setup the cannonball to be launched, we are sending the pool object because it will use it when it is self destroyed and disabled
+        m_cannonBall.SetUp(projectileFirePoint.forward * projectileShootingForce, pool); 
 
 
+    }
 
+    //Unlock the mouse when the fire will no longer be enabled
+    public void DisableFire()
+    {
+        m_fireDisabled = true;
+        Cursor.lockState = CursorLockMode.None;
     }
 
 
