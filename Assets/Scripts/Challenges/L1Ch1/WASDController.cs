@@ -2,28 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SphereController
+/// <summary>
+/// This script moves the vehicle front, back, left and right using WASD
+/// </summary>
+
+public class WASDController
     : MonoBehaviour
 {
 
     [SerializeField] Transform m_cubeTransform;
     [SerializeField] float m_cubeSpeed;
 
-
-
-
-    private void Awake()
-    {
-        //Cursor.lockState = CursorLockMode.Locked;
-        //Cursor.visible = false;
-    }
-
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
 
     // Update is called once per frame
     void Update()
