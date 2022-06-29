@@ -2381,6 +2381,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 566564791, guid: bd557301846767b459959894082f15d7, type: 3}
+      propertyPath: useKeyboard
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 566564791, guid: bd557301846767b459959894082f15d7, type: 3}
       propertyPath: m_cannonBallTypeShot
       value: 2
       objectReference: {fileID: 0}

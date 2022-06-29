@@ -48,16 +48,29 @@ public class CannonController : MonoBehaviour
 
     //Private Variables
     private RaycastHit[] m_aimingHits;
-    private bool m_fireDisabled = false;
+    
 
+    [Header("Input Settings")]
+    [SerializeField]
+    private bool useKeyboard;
+    private bool m_fireDisabled = false;
+    private ICannonInputScheme inputScheme;
 
 
 
 
     private void Awake()
     {
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
+        if (useKeyboard)
+        {
+            inputScheme = new CannonKeyboardInputScheme();
+        }
+        else
+        {
+            inputScheme = new CannonMouseInputScheme();
+        }
+
+        //Setup the number of elements per each balltype that will be created in the pool to help performance.
         pool.SetUp(20);
 
 
@@ -122,14 +135,21 @@ public class CannonController : MonoBehaviour
 
     private void AimCannon()
     {
+        //Strategy Pattern
+        //creating a nerw variable
+        var input = inputScheme.AimInput();
+
+        //
+
+        
         //rotate along the x axis
-        float horizontal = Input.GetAxis("Mouse X");
-        float newBaseRotation = cannonBaseTransform.localRotation.eulerAngles.y + rotationSpeed * horizontal; 
+        //float horizontal = input.x;
+        float newBaseRotation = cannonBaseTransform.localRotation.eulerAngles.y + rotationSpeed * input.x; 
 
 
         //rotate along the y axis
-        float vertical = Input.GetAxis("Mouse Y");
-        float newBarrelRotation = cannonBarrelTransform.localRotation.eulerAngles.x - rotationSpeed * vertical; //we put minus because when the mouse goes down, the barrel goes up, when the mouse goes up the barrel goes down.
+        //float vertical = input.y;
+        float newBarrelRotation = cannonBarrelTransform.localRotation.eulerAngles.x - rotationSpeed * input.y; //we put minus because when the mouse goes down, the barrel goes up, when the mouse goes up the barrel goes down.
 
         // limit the rotation in both axiss
         newBaseRotation = Mathf.Clamp(newBaseRotation, minYRotation, maxYRotation);
@@ -150,8 +170,18 @@ public class CannonController : MonoBehaviour
         // do we have that left mouse button that can be pushed
 
         // guard clause - save resources - if our fire is disabled or we dont have a button just break the function
-        if(m_fireDisabled || !Input.GetButtonDown("Fire1"))
+        /*if(m_fireDisabled || !Input.GetButtonDown("Fire1"))
         {
+            return;
+        }
+
+        */
+
+
+        //Checks the interface - guard clause to see if the fire has been triggered.
+        if(m_fireDisabled || !inputScheme.FireTriggered())
+        {
+            //Debug.Log($"FireTriggered");
             return;
         }
 
@@ -167,8 +197,13 @@ public class CannonController : MonoBehaviour
     //Unlock the mouse when the fire will no longer be enabled
     public void DisableFire()
     {
+        
+        
         m_fireDisabled = true;
-        Cursor.lockState = CursorLockMode.None;
+        //OLD before implementing interface in U3L7 ==> Cursor.lockState = CursorLockMode.None;
+
+        //Call the CannonMouseInputScheem class to disable the mouse lock
+        inputScheme.Dispose();
     }
 
 

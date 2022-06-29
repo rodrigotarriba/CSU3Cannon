@@ -2184,7 +2184,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 566564791, guid: bd557301846767b459959894082f15d7, type: 3}
       propertyPath: m_cannonBallTypeShot
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 566564791, guid: bd557301846767b459959894082f15d7, type: 3}
       propertyPath: pool.possibleCannonBallPrefabs.Array.size
