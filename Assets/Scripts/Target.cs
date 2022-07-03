@@ -4,6 +4,8 @@ using UnityEngine;
 
 /// <summary>
 /// manages targets - destroys them and highlightes them when pointing
+/// 
+/// after C3L8 - instead of this class referencing the levelcontroller on setup, we will reference it to the service locator.
 /// </summary>
 
 namespace CannonApp
@@ -17,8 +19,11 @@ namespace CannonApp
         [SerializeField]
         private Material m_redMaterial;
 
-        private LevelController m_levelController;
-
+        private void Start()
+        {
+            Debug.Log($"addingonemoretarget");
+            GameServices.GetService<LevelController>().RegisterTarget();
+        }
 
         private void Awake()
         {
@@ -26,14 +31,6 @@ namespace CannonApp
 
             m_waterTriggerLayerIndex = LayerMask.NameToLayer("WaterTrigger");
         }
-
-
-        // Called from outside to give this target object a reference to the level controller - the script will help reduce the number of elements remaining when this is destroyed
-        public void SetUp(LevelController controller)
-        {
-            m_levelController = controller;
-        }
-
 
 
         private void Update()
@@ -48,8 +45,9 @@ namespace CannonApp
         {
             if (other.gameObject.layer == m_waterTriggerLayerIndex)
             {
-                //tells Level Controller a target has been destroyed
-                m_levelController.TargetDestroyed();
+               
+                //tells the Level Controller service that a target has been destroyed. 
+                GameServices.GetService<LevelController>().TargetDestroyed();
 
                 //kill this object
                 Destroy(gameObject); 

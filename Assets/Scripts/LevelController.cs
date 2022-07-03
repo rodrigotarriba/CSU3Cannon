@@ -19,22 +19,29 @@ namespace CannonApp
         private static readonly int LevelEndedHash = Animator.StringToHash("LevelEnded");
         private static readonly int GameOverHash = Animator.StringToHash("GameOver");
 
-        [SerializeField] private CannonController cannonController; //from scene
+        //[SerializeField] private CannonController cannonController; //from scene, imported directly into the script, but it has been deleted.
+
         [SerializeField] private Animator animator; //From the UI prefab itself
         [SerializeField] private TMP_Text remainingTargetsText; //From the UI nested prefabs
         [SerializeField] private TMP_Text levelFinishedText; // from the UI nested prefabs
 
         private static int levelCount;//Where does this one come from?
 
-        private int remainingTargets;
+        protected int remainingTargets; //changing to protected variable so it can be modified from the targets script
         private int currentLevel;
 
+        public Action levelEnded; //fires off once the level has ended
 
-        private void Awake()
+
+        protected virtual void Awake()
         {
+            //service locator pattern
+            //we will add the level controller as part of our service locator.
+            GameServices.RegisterService(this);
+            
             InitializeLevelCount();
             SetCurrentLevel();
-            InitializeTargets();
+            //InitializeTargets();
         }
 
 
@@ -98,18 +105,32 @@ namespace CannonApp
             }
         }
 
-        private void InitializeTargets()
+        
+        
+        
+        //increases our remaining targets - added after using the service locator pattern
+        public virtual void RegisterTarget()
         {
-            Target[] targets = FindObjectsOfType<Target>();
-
-            foreach(var target in targets)
-            {
-                target.SetUp(this);
-            }
-
-            remainingTargets = targets.Length;
+            remainingTargets++;
+            Debug.Log($"added one more target for a total of {remainingTargets}");
             UpdateRemainingTargets();
         }
+
+
+        //We are not going to use this anymore.
+
+        //private void InitializeTargets()
+        //{
+        //    Target[] targets = FindObjectsOfType<Target>();
+
+        //    foreach(var target in targets)
+        //    {
+        //        target.SetUp(this);
+        //    }
+
+        //    remainingTargets = targets.Length;
+        //    UpdateRemainingTargets();
+        //}
 
 
         // When a target is destroyed, decreases remainingTargets variable, then calls a function that updates the remaining targets number in the UI, if 
@@ -129,8 +150,9 @@ namespace CannonApp
         //When the level ends, disables fire, triggers animation, we send a "level ended" text.  
         private void EndLevel()
         {
-            // disable fire capabilities with the guard clause on CannonController and enable mouse again
-            cannonController.DisableFire(); 
+            levelEnded?.Invoke();
+
+
 
             if (currentLevel == levelCount)
             {
@@ -155,8 +177,6 @@ namespace CannonApp
             GoToLevel(1);
         }
 
-
-
         //scene management, loads a scene depending on the scene integer you want - now we need to construct some UI thjat tells us the remaining targets and level they are.
         private void GoToLevel(int levelIndex)
         {
@@ -165,7 +185,7 @@ namespace CannonApp
 
 
         //Update the UI with the remaining targets, 
-        private void UpdateRemainingTargets()
+        protected void UpdateRemainingTargets()
         {
             remainingTargetsText.text = $"Remaining Targets: {remainingTargets}!";
         }

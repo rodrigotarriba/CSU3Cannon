@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using CannonApp;
 
 public class CannonController : MonoBehaviour
 {
@@ -80,6 +81,7 @@ public class CannonController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        GameServices.GetService<LevelController>().levelEnded += OnLevelEnded;
         return;
     }
 
@@ -195,10 +197,10 @@ public class CannonController : MonoBehaviour
     }
 
     //Unlock the mouse when the fire will no longer be enabled
-    public void DisableFire()
+    //changed name from DisableFire to OnLevelEnded()
+    public void OnLevelEnded()
     {
-        
-        
+
         m_fireDisabled = true;
         //OLD before implementing interface in U3L7 ==> Cursor.lockState = CursorLockMode.None;
 

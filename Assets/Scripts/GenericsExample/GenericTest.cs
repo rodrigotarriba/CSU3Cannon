@@ -19,9 +19,6 @@ public class GenericTest : MonoBehaviour, IGenericTest <int>
         LogComponent(transform);
         LogComponent(GetComponent<MeshRenderer>());
         LogComponent<Renderer>(GetComponent<MeshRenderer>());
-        
-        
-
     }
 
     public void MyLog(int score)
@@ -60,4 +57,10 @@ public class GenericTest : MonoBehaviour, IGenericTest <int>
     }
 
 
+    private void CustomAddComponent2<T>(GameObject obj) where T : MonoBehaviour
+    {
+        var component = obj.AddComponent<T>();
+        Debug.Log($"Components to count {obj.GetComponents<T>().Length}");
+
+    }
 }
