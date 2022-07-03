@@ -31,7 +31,7 @@ public class CannonController : MonoBehaviour
     [SerializeField]
     private float projectileShootingForce;
     [SerializeField]
-    private CannonBallType m_cannonBallTypeShot;
+    private PoolObjectId objectTypeToBeShot;
     
 
 
@@ -45,7 +45,7 @@ public class CannonController : MonoBehaviour
 
     [Header("Object Pooling")]
     [SerializeField]
-    private CannonBallsPool pool; //this is the very first instance of the pooling, from here is where it gets passed around to others.
+    private ObjectPool pool; //this is the very first instance of the pooling, from here is where it gets passed around to others.
 
     //Private Variables
     private RaycastHit[] m_aimingHits;
@@ -187,11 +187,11 @@ public class CannonController : MonoBehaviour
             return;
         }
 
-        CannonBall m_cannonBall = pool.GetCannonBall(m_cannonBallTypeShot);
-        m_cannonBall.transform.position = projectileFirePoint.position;
+        GameObject m_myObject = pool.GetObject(objectTypeToBeShot).gameObject;
+        m_myObject.transform.position = projectileFirePoint.position;
         
         //you setup the cannonball to be launched, we are sending the pool object because it will use it when it is self destroyed and disabled
-        m_cannonBall.SetUp(projectileFirePoint.forward * projectileShootingForce, pool); 
+        m_myObject.GetComponent<IPoolObject>().SetUp(projectileFirePoint.forward * projectileShootingForce, pool); 
 
 
     }

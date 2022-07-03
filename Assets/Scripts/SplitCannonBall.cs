@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using CannonApp;
 
 /// <summary>
 /// This object is attached to a variant of CannonBall
@@ -21,7 +22,7 @@ public class SplitCannonBall : CannonBall
     [SerializeField] protected CannonBall simpleCannonBall; //this is the regular cannonball that will be instanciated once the split cannon ball time goes off
 
     // we are overriding the typ of cannoball inherited from CannonBall
-    public override CannonBallType ballType => CannonBallType.Split; 
+    public override PoolObjectId PoolId => PoolObjectId.SplitCannonBall;
 
 
     // Update is called once per frame
@@ -51,13 +52,13 @@ public class SplitCannonBall : CannonBall
 
 
         //instantiate the splitted cannonballs by grab the balls from the pool, - these will be of Normal type and explode the regular way
-        var ball1 = pool.GetCannonBall(CannonBallType.Normal);
-        var ball2 = pool.GetCannonBall(CannonBallType.Normal);
+        var ball1 = pool.GetObject(PoolObjectId.DefaultCannonBall);
+        var ball2 = pool.GetObject(PoolObjectId.DefaultCannonBall);
 
 
         //  propell the balls forward and set the angular velocity (call setup)
-        ball1.SetUp(ball1Forward, pool);
-        ball2.SetUp(ball2Forward, pool);
+        ball1.GetComponent<CannonBall>().SetUp(ball1Forward, pool);
+        ball2.GetComponent<CannonBall>().SetUp(ball1Forward, pool);
 
 
         // trigger the special used animation
@@ -67,7 +68,7 @@ public class SplitCannonBall : CannonBall
     }
 
 
-    public override void SetUp(Vector3 m_fireForce, CannonBallsPool objectPool)
+    public override void SetUp(Vector3 m_fireForce, ObjectPool objectPool)
     {
         // calling what its already in the base class 
         base.SetUp(m_fireForce, objectPool);

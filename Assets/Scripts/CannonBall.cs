@@ -1,10 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using CannonApp;
 
 
-
-public class CannonBall : MonoBehaviour
+public class CannonBall : MonoBehaviour, IPoolObject
 {
     protected Rigidbody m_cannonBallRigidBody; //a protected variable is accesible to the children of the class they are at
 
@@ -15,9 +15,9 @@ public class CannonBall : MonoBehaviour
 
     private static readonly int exploded = Animator.StringToHash("Exploded");
 
-    public virtual CannonBallType ballType => CannonBallType.Normal; //this is how you assign a variable from an enum without it being a regular variable, it needs to be a function.
+    public virtual PoolObjectId PoolId => PoolObjectId.DefaultCannonBall; //this is how you assign a variable from an enum without it being a regular variable, it needs to be a function.
 
-    protected CannonBallsPool pool; //
+    protected ObjectPool pool; //
 
 
     private void Awake()
@@ -30,7 +30,7 @@ public class CannonBall : MonoBehaviour
 
 
     // This is a virtual method that is called externally by the controller to instantiate/activate a new cannonball to be propelled - the children of this class add more functions to it
-    public virtual void SetUp(Vector3 m_fireForce, CannonBallsPool objectPool)
+    public virtual void SetUp(Vector3 fireForce, ObjectPool objectPool)
     {
         //resetting initial inercia of the ball
         m_cannonBallRigidBody.angularVelocity = Vector3.zero;
@@ -42,7 +42,7 @@ public class CannonBall : MonoBehaviour
 
 
         // Adding a impulse force to the cannonball
-        m_cannonBallRigidBody.AddForce(m_fireForce, ForceMode.Impulse);
+        m_cannonBallRigidBody.AddForce(fireForce, ForceMode.Impulse);
 
         //Adding an angular velocity to the cannon ball, lets make it rotate. 
         m_cannonBallRigidBody.angularVelocity = new Vector3(Random.Range(-10, 10), Random.Range(-10, 10), Random.Range(-10, 10));
@@ -101,19 +101,27 @@ public class CannonBall : MonoBehaviour
     {
         // the moment the cannonball touches the water it doesnt explode so it triggers this without the animation
 
-        //Now, when the cannonball needs to be destroyed, it will put itself back into the CannonBallsPool
-        pool.ReleaseCannonBall(this, ballType);
+        //Now, when the cannonball needs to be destroyed, it will put itself back into the ObjectPool
+        pool.ReleaseObject(this, PoolId);
     }
 
 
     public void OnFinishedExplosionAnimation()
     {
-        //when the cannonball touches an object and needs to explode, it triggers the animation first, which then triggers this method at the end, releasing the instance back into the CannonBallsPool (this used to destroy the gameobject before pooling)
+        //when the cannonball touches an object and needs to explode, it triggers the animation first, which then triggers this method at the end, releasing the instance back into the ObjectPool (this used to destroy the gameobject before pooling)
 
-        pool.ReleaseCannonBall(this, ballType);
+        pool.ReleaseObject(this, PoolId);
 
     }
 
+    public void Activate()
+    {
+        gameObject.SetActive(true);
+    }
 
+    public void Deactivate()
+    {
+        gameObject.SetActive(false);
+    }
 
 }

@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using CannonApp;
 
 
 public class ComboCannonBall : CannonBall
@@ -18,7 +18,7 @@ public class ComboCannonBall : CannonBall
 
     }
 
-    public override CannonBallType ballType => CannonBallType.Combo;
+    public override PoolObjectId PoolId => PoolObjectId.ComboCannonBall;
 
     private void SpawnUpwardsCannonBalls()
     {
@@ -34,17 +34,17 @@ public class ComboCannonBall : CannonBall
 
 
         //instantiate the split cannonballs
-        var ball1 = pool.GetCannonBall(CannonBallType.Normal);
-        var ball2 = pool.GetCannonBall(CannonBallType.Normal);
+        var ball1 = pool.GetObject(PoolObjectId.DefaultCannonBall);
+        var ball2 = pool.GetObject(PoolObjectId.DefaultCannonBall);
 
 
         // propell the balls forward and set the angular velocity (call setup)
-        ball1.SetUp(ball1Upwards, pool);
-        ball2.SetUp(ball2Upwards, pool);
+        ball1.gameObject.GetComponent<CannonBall>().SetUp(ball1Upwards, pool);
+        ball2.gameObject.GetComponent<CannonBall>().SetUp(ball2Upwards, pool);
 
     }
 
-    public override void SetUp(Vector3 m_fireForce, CannonBallsPool pool)
+    public override void SetUp(Vector3 m_fireForce, ObjectPool pool)
     {
         // calling what its already in the base class 
         base.SetUp(m_fireForce, pool);

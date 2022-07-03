@@ -375,20 +375,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9deba0bda4642e8448f1ca116699f3bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxYRotation: 130
-  minYRotation: 50
+  maxYRotation: 155.9
+  minYRotation: 26
   maxXRotation: 75
   minXRotation: 15
   rotationSpeed: 5
   cannonBarrelTransform: {fileID: 7493693398930409538}
   cannonBaseTransform: {fileID: 7493978000168114224}
-  projectilePrefab: {fileID: -2323991421100412357, guid: 67899a05c6760fd4c82d4bed15cb595a,
-    type: 3}
   projectileFirePoint: {fileID: 2236371049338748935}
   projectileShootingForce: 40
+  objectTypeToBeShot: 0
   m_redBarrelMaterial: {fileID: 2100000, guid: 4fd39a4d8fae78a4db79e331c3935642, type: 2}
   m_defaultBarrelMaterial: {fileID: 2100000, guid: 790aef9e41abc39439890f1d40bf092d,
     type: 2}
+  pool:
+    possibleObjects:
+    - {fileID: -2323991421100412357, guid: 67899a05c6760fd4c82d4bed15cb595a, type: 3}
+    - {fileID: 3385120437209102192, guid: e9d8bcb3f7641154eb84cd8edbb6d2dc, type: 3}
+    - {fileID: -1500079261747528225, guid: 4f342cbaf83ada24bae4992ef3873c43, type: 3}
+  useKeyboard: 0
 --- !u!1 &7491226463429729616
 GameObject:
   m_ObjectHideFlags: 0
