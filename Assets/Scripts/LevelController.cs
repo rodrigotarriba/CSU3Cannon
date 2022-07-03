@@ -16,14 +16,10 @@ namespace CannonApp
 {
     public class LevelController : MonoBehaviour
     {
-        private static readonly int LevelEndedHash = Animator.StringToHash("LevelEnded");
-        private static readonly int GameOverHash = Animator.StringToHash("GameOver");
 
-        //[SerializeField] private CannonController cannonController; //from scene, imported directly into the script, but it has been deleted.
+        [SerializeField]
+        protected UIGraphics uiGraphics;
 
-        [SerializeField] private Animator animator; //From the UI prefab itself
-        [SerializeField] private TMP_Text remainingTargetsText; //From the UI nested prefabs
-        [SerializeField] private TMP_Text levelFinishedText; // from the UI nested prefabs
 
         private static int levelCount;//Where does this one come from?
 
@@ -112,25 +108,8 @@ namespace CannonApp
         public virtual void RegisterTarget()
         {
             remainingTargets++;
-            Debug.Log($"added one more target for a total of {remainingTargets}");
-            UpdateRemainingTargets();
+            uiGraphics.UpdateRemainingTargets(remainingTargets);
         }
-
-
-        //We are not going to use this anymore.
-
-        //private void InitializeTargets()
-        //{
-        //    Target[] targets = FindObjectsOfType<Target>();
-
-        //    foreach(var target in targets)
-        //    {
-        //        target.SetUp(this);
-        //    }
-
-        //    remainingTargets = targets.Length;
-        //    UpdateRemainingTargets();
-        //}
 
 
         // When a target is destroyed, decreases remainingTargets variable, then calls a function that updates the remaining targets number in the UI, if 
@@ -142,9 +121,20 @@ namespace CannonApp
             if (remainingTargets <= 0)
                 EndLevel();
 
-            UpdateRemainingTargets();
+            uiGraphics.UpdateRemainingTargets(remainingTargets);
         }
 
+
+        public void NextLevel()
+        {
+            GoToLevel(currentLevel + 1);
+                
+        }
+
+        public void RetryGame()
+        {
+            GoToLevel(1);
+        }
 
 
         //When the level ends, disables fire, triggers animation, we send a "level ended" text.  
@@ -152,16 +142,14 @@ namespace CannonApp
         {
             levelEnded?.Invoke();
 
-
-
             if (currentLevel == levelCount)
             {
-                animator.SetTrigger(GameOverHash);
+                //Game ends
+                uiGraphics.EndGame();
                 return;
             }
 
-            levelFinishedText.text = $"Level {currentLevel} Finished!";
-            animator.SetTrigger(LevelEndedHash);
+            uiGraphics.EndLevel(currentLevel);
         }
 
 
@@ -169,6 +157,10 @@ namespace CannonApp
         {
              GoToLevel(currentLevel + 1);
         }
+
+
+
+
 
 
 
@@ -184,10 +176,6 @@ namespace CannonApp
         }
 
 
-        //Update the UI with the remaining targets, 
-        protected void UpdateRemainingTargets()
-        {
-            remainingTargetsText.text = $"Remaining Targets: {remainingTargets}!";
-        }
+
     }
 }

@@ -52,7 +52,7 @@ public static class GameServices
 
     public static void Clear()
     {
-
+        serviceMap.Clear();
     }
 
 

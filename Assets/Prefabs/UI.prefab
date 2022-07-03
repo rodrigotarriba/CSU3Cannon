@@ -93,7 +93,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 18
+  m_fontSize: 72
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -324,6 +324,7 @@ GameObject:
   - component: {fileID: 1784185637348850201}
   - component: {fileID: 9053336479903085825}
   - component: {fileID: 2843461818267215921}
+  - component: {fileID: 3515522974033959899}
   m_Layer: 5
   m_Name: UI
   m_TagString: Untagged
@@ -340,7 +341,7 @@ RectTransform:
   m_GameObject: {fileID: 8143466738658779537}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.022439549, y: 0.022439549, z: 0.022439549}
+  m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8143466737611316960}
@@ -363,7 +364,7 @@ Canvas:
   m_GameObject: {fileID: 8143466738658779537}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 2
+  m_RenderMode: 0
   m_Camera: {fileID: 0}
   m_PlaneDistance: 100
   m_PixelPerfect: 0
@@ -397,7 +398,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 1
+  m_PresetInfoIsWorld: 0
 --- !u!114 &8143466738658779536
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -481,10 +482,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e497bf1811b4f8296efb50df9aa68d3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cannonController: {fileID: 0}
-  animator: {fileID: 0}
-  remainingTargetsText: {fileID: 0}
-  levelFinishedText: {fileID: 0}
+  uiGraphics: {fileID: 3515522974033959899}
+--- !u!114 &3515522974033959899
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8143466738658779537}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 65494b608d890164fbcf65a5402c60c3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animator: {fileID: 8143466738658779540}
+  remainingTargetsText: {fileID: 8143466737611316967}
+  levelFinishedText: {fileID: 8143466739054081868}
 --- !u!1 &8143466738973526901
 GameObject:
   m_ObjectHideFlags: 0
@@ -606,7 +619,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 8143466738973526906}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 3515522974033959899}
+        m_TargetAssemblyTypeName: UIGraphics, Assembly-CSharp
+        m_MethodName: OnRetryClicked
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &8143466739054081870
 GameObject:
   m_ObjectHideFlags: 0
@@ -700,7 +725,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 18
+  m_fontSize: 145.2
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1

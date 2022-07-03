@@ -194,12 +194,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c5ff4e71e7dca8845bcf328d06e939e3, type: 3}
---- !u!1 &52836679 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8143466738658779537, guid: 666fe2ba448238848ba203806dd2b503,
-    type: 3}
-  m_PrefabInstance: {fileID: 3515522974033959888}
-  m_PrefabAsset: {fileID: 0}
 --- !u!850595691 &60682753
 LightingSettings:
   m_ObjectHideFlags: 0
@@ -2154,7 +2148,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 3515522974033959892}
+      objectReference: {fileID: 0}
     - target: {fileID: 8143466738973526907, guid: 666fe2ba448238848ba203806dd2b503,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
@@ -2175,8 +2169,7 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 2843461818267215921, guid: 666fe2ba448238848ba203806dd2b503, type: 3}
+    m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 666fe2ba448238848ba203806dd2b503, type: 3}
 --- !u!114 &3515522974033959889 stripped
 MonoBehaviour:
@@ -2208,22 +2201,6 @@ Animator:
     type: 3}
   m_PrefabInstance: {fileID: 3515522974033959888}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &3515522974033959892
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 52836679}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 162c93daba095f746a09fc11b885f93d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  animator: {fileID: 3515522974033959891}
-  remainingTargetsText: {fileID: 3515522974033959890}
-  levelFinishedText: {fileID: 3515522974033959889}
-  targetDestructionCount: 30
 --- !u!1001 &4529566582675802742
 PrefabInstance:
   m_ObjectHideFlags: 0
