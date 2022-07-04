@@ -17,18 +17,18 @@ namespace CannonApp
     {
         //all the possible cannon balls to be used
         [SerializeField]
-        private List<MonoBehaviour> possibleObjects;
+        private List<GameObject> possibleObjects;
 
-
-        private Dictionary<PoolObjectId, List<MonoBehaviour>> pools;
+        private Dictionary<PoolObjectId, IPoolObject> idToPrefab;
+        private Dictionary<PoolObjectId, List<IPoolObject>> pools;
         // focused in the cannonball cashing only
 
 
         //we need to create a method that will instantiate these cannonballs right at the beginning, whenever we shoot, instead of the cannon controller. 
-        private MonoBehaviour Instantiate(MonoBehaviour myobject)
+        private IPoolObject Instantiate(IPoolObject myObject)
         {
-            var newObject = Object.Instantiate(myobject); //object is a unity class for objects 
-            newObject.gameObject.GetComponent<IPoolObject>().Deactivate(); //we deactivate it so it can be stored in the dictionary
+            var newObject = (IPoolObject)Object.Instantiate((MonoBehaviour)myObject); //object is a unity class for objects, we call object since we are implementing the same method in this class 
+            newObject.Deactivate(); //we deactivate it so it can be stored in the dictionary
 
             return newObject;
         }
@@ -38,39 +38,59 @@ namespace CannonApp
         //The benefit of this pattern, you have a higher loading time, not only takes time, we use the SetUp functions beacuse of the way Unity serialization works, but often times it works as a constructor.
 
 
-        //creates the dictionary
+        //creates id to prefab dictionary
+        private void InitializeIDToPrefabDictionary()
+        {
+            idToPrefab = new Dictionary<PoolObjectId, IPoolObject>(possibleObjects.Count);
+
+            foreach (var eachObject in possibleObjects)
+            {
+                var objIPoolObject = eachObject.GetComponent<IPoolObject>();
+                if(objIPoolObject == null)
+                {
+                    throw new System.Exception($"PoolPrefab is not a IPoolObject! {eachObject}");
+                }
+
+                idToPrefab[objIPoolObject.PoolId] = objIPoolObject;
+            }
+        }
+
+
+
+        //creates the pool dictionary
         public void SetUp(int preWarmCount)
         {
-            pools = new Dictionary<PoolObjectId, List<MonoBehaviour>>(possibleObjects.Count);
+            InitializeIDToPrefabDictionary();
+            pools = new Dictionary<PoolObjectId, List<IPoolObject>>(possibleObjects.Count);
         
 
-            foreach (var objectPrefab in possibleObjects)
+            foreach (var prefabInterface in idToPrefab.Values)
             {
-                var pool = new List<MonoBehaviour>(preWarmCount);
+                var pool = new List<IPoolObject>(preWarmCount);
 
                 for (int i = 0; i < preWarmCount; i++)
                 {
                     //create those prefabs and add them to the pools dictionary, so we can keep track
-                    pool.Add(Instantiate(objectPrefab));
+                    pool.Add(Instantiate(prefabInterface));
                 }
 
-                pools[objectPrefab.GetComponent<IPoolObject>().PoolId] = pool; //this is how you grab the value of an enum and assign it to a key in a dictionary
+                pools[prefabInterface.PoolId] = pool; //this is how you grab the value of an enum and assign it to a key in a dictionary
 
 
             }
         }
 
         //retrieves the next ball to be grabbed
-        public MonoBehaviour GetObject(PoolObjectId objectType)
+        public IPoolObject GetObject(PoolObjectId objectType)
         {
             var pool = pools[objectType];
-            MonoBehaviour myObject;
+            IPoolObject myObject;
 
             //expression to assign a new instance to the dictionary if it ran out, or if it doesnt have enough instances.
             if(pool.Count == 0)
             {
                 //if it doesnt have the value, instance a new ball
-                myObject = Instantiate(possibleObjects.Find(theobject => theobject.GetComponent<IPoolObject>().PoolId == objectType));
+                myObject = Instantiate(idToPrefab[objectType]);
             }
             else
             {
@@ -79,18 +99,18 @@ namespace CannonApp
                 pool.RemoveAt(0);
 
             }
-            myObject.gameObject.GetComponent<IPoolObject>().Activate();
+            myObject.Activate();
             return myObject;
         }
 
         //once the cannonball has been used, it can return back to the dictionary for storage
-        public void ReleaseObject(MonoBehaviour myObject, PoolObjectId objectType)
+        public void ReleaseObject(IPoolObject myObject, PoolObjectId objectType)
         {
             //gets added back into the List<cannonBall> 
             pools[objectType].Add(myObject);
 
             //returns to its deactivated state
-            myObject.gameObject.GetComponent<IPoolObject>().Deactivate();
+            myObject.Deactivate();
 
 
         }
