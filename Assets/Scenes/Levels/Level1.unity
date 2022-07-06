@@ -256,6 +256,12 @@ LightingSettings:
   m_PVRFilteringAtrousPositionSigmaIndirect: 2
   m_PVRFilteringAtrousPositionSigmaAO: 1
   m_PVRTiledBaking: 0
+--- !u!95 &78395553 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 8143466738658779540, guid: 666fe2ba448238848ba203806dd2b503,
+    type: 3}
+  m_PrefabInstance: {fileID: 3515522974033959888}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &105808392 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5723106013497180027, guid: 4fa5b8d5a91a7104eb1dcae1bb798c58,
@@ -1538,6 +1544,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3228a22491941734bb83ad691d17fcb9, type: 3}
+--- !u!114 &1780887639 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8143466737675167489, guid: 666fe2ba448238848ba203806dd2b503,
+    type: 3}
+  m_PrefabInstance: {fileID: 3515522974033959888}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1782105470
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1766,6 +1784,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2843461818267215921, guid: 666fe2ba448238848ba203806dd2b503,
+        type: 3}
+      propertyPath: animator
+      value: 
+      objectReference: {fileID: 78395553}
+    - target: {fileID: 3515522974033959899, guid: 666fe2ba448238848ba203806dd2b503,
+        type: 3}
+      propertyPath: levelFinishedText
+      value: 
+      objectReference: {fileID: 1780887639}
     - target: {fileID: 8143466738658779537, guid: 666fe2ba448238848ba203806dd2b503,
         type: 3}
       propertyPath: m_Name

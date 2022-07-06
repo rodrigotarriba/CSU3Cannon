@@ -5,79 +5,74 @@ using UnityEngine.SceneManagement;
 using System.Text.RegularExpressions;
 using TMPro;
 
-/// <summary>
-/// Attached to UI prefab - Keeps track of targets and score, scenes, updates UI
-/// </summary>
-
-
-
-
 namespace CannonApp
 {
     public class LevelController : MonoBehaviour
     {
 
-        [SerializeField]
-        protected UIGraphics uiGraphics;
 
 
-        private static int levelCount;//Where does this one come from?
 
-        protected int remainingTargets; //changing to protected variable so it can be modified from the targets script
+
+
+        [SerializeField] protected UIGraphics uiGraphics;
+ 
+        private static int levelCount;
+
+        public Action levelEnded;
+        protected int remainingTargets;
         private int currentLevel;
 
-        public Action levelEnded; //fires off once the level has ended
 
 
-        protected virtual void Awake()
+        public void TargetDestroyed()
         {
-            //service locator pattern
-            //we will add the level controller as part of our service locator.
-            GameServices.RegisterService(this);
-            
-            InitializeLevelCount();
-            SetCurrentLevel();
-            //InitializeTargets();
+            remainingTargets--;
+
+            if (remainingTargets <= 0)
+                EndLevel();
+
+            uiGraphics.UpdateRemainingTargets(remainingTargets);
         }
 
-
-        // sets the total number of levels in the game
-        private void InitializeLevelCount()
+        public virtual void RegisterTarget()
         {
-            
-            // guard clause in case you already have a level count
-            if (levelCount != 0)
-                return;
+            remainingTargets++;
+            uiGraphics.UpdateRemainingTargets(remainingTargets);
+        }
 
+        public void NextLevel()
+        {
+            GoToLevel(currentLevel + 1);
+        }
 
-            //loop to get the number of levels in the game - goes through every scene and identifies levels if the scenes have 2 digits
-            int sceneCount = SceneManager.sceneCountInBuildSettings;
+        public void RetryGame()
+        {
+            GoToLevel(1);
+        }
 
-            int maxLevelFound = 0;
+        private void EndLevel()
+        {
+            levelEnded?.Invoke();
 
-            for (int i = 0; i < sceneCount; i++)
+            if (currentLevel == levelCount)
             {
-                string scenePath = SceneUtility.GetScenePathByBuildIndex(i);
-                string sceneName = Path.GetFileNameWithoutExtension(scenePath);
-
-
-                // we need to check if we have reached the max amount of levels
-                if (GetLevelIndex(sceneName, out var levelIndex))
-                {
-                    maxLevelFound = Mathf.Max(maxLevelFound, levelIndex);
-                    levelCount++;
-                }
+                uiGraphics.EndGame();
+                //removed this animator.SetTrigger(GameOverHash);
+                return;
             }
 
-            //if the total number of levels found differs from total of max scene numbers, it will print this warning
-            Debug.Assert(maxLevelFound == levelCount, "Max Scene Level differs from the total levels found");
+            uiGraphics.EndLevel(currentLevel);
+
         }
 
+        private void GoToLevel(int levelIndex)
+        {
+            SceneManager.LoadScene($"Level{levelIndex}");
+        }
 
-        //retrieves the 2 or more digits of a string, returnes the digits parsed as 32 signed int
         private bool GetLevelIndex(string sceneName, out int levelIndex)
         {
-           //it looks for one or more digits in the scene name
             Match find = Regex.Match(sceneName, "\\d+");
 
             if (find != Match.Empty)
@@ -90,91 +85,50 @@ namespace CannonApp
             return false;
         }
 
+        protected virtual void Awake()
+        {
+            GameServices.RegisterService(this);
 
-        // we are comparing the actual current scene, with the variable we have in the getcurrentscenelevel function.
+            InitializeLevelCount();
+            SetCurrentLevel();
+        }
+
+        private void OnDestroy()
+        {
+            GameServices.DeregisterService(this);
+        }
+
         private void SetCurrentLevel()
         {
-         
             if (!GetLevelIndex(SceneManager.GetActiveScene().name, out currentLevel))
             {
                 Debug.LogError("Level Controller on a non-level scene!");
             }
         }
 
-        
-        
-        
-        //increases our remaining targets - added after using the service locator pattern
-        public virtual void RegisterTarget()
+        private void InitializeLevelCount()
         {
-            remainingTargets++;
-            uiGraphics.UpdateRemainingTargets(remainingTargets);
-        }
-
-
-        // When a target is destroyed, decreases remainingTargets variable, then calls a function that updates the remaining targets number in the UI, if 
-        public void TargetDestroyed()
-        {
-            remainingTargets--;
-
-            // if all targets are hit, start endlevel process
-            if (remainingTargets <= 0)
-                EndLevel();
-
-            uiGraphics.UpdateRemainingTargets(remainingTargets);
-        }
-
-
-        public void NextLevel()
-        {
-            GoToLevel(currentLevel + 1);
-                
-        }
-
-        public void RetryGame()
-        {
-            GoToLevel(1);
-        }
-
-
-        //When the level ends, disables fire, triggers animation, we send a "level ended" text.  
-        private void EndLevel()
-        {
-            levelEnded?.Invoke();
-
-            if (currentLevel == levelCount)
-            {
-                //Game ends
-                uiGraphics.EndGame();
+            if (levelCount != 0)
                 return;
+
+            int sceneCount = SceneManager.sceneCountInBuildSettings;
+
+            int maxLevelFound = 0;
+
+            for( int i = 0; i < sceneCount; i++ )
+            {
+                string scenePath = SceneUtility.GetScenePathByBuildIndex(i);
+                string sceneName = Path.GetFileNameWithoutExtension(scenePath);
+
+                if (GetLevelIndex(sceneName, out var levelIndex))
+                {
+                    maxLevelFound = Mathf.Max(maxLevelFound, levelIndex);
+                    levelCount++;
+                }
             }
 
-            uiGraphics.EndLevel(currentLevel);
+            Debug.Assert(maxLevelFound == levelCount, "Max Scene Level differs from the total levels found");
         }
-
-
-        public void OnFinishedEndLevelAnimation()  //good reference of how to word functions to make sure they are easy to understand.
-        {
-             GoToLevel(currentLevel + 1);
-        }
-
-
-
-
-
-
-
-        public void OnRetryClicked()
-        {
-            GoToLevel(1);
-        }
-
-        //scene management, loads a scene depending on the scene integer you want - now we need to construct some UI thjat tells us the remaining targets and level they are.
-        private void GoToLevel(int levelIndex)
-        {
-            SceneManager.LoadScene($"Level{levelIndex}");
-        }
-
 
 
     }
